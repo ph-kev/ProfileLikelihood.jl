@@ -30,13 +30,6 @@ u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# solver algorithm, tolerances
-solver_opts = Dict(
-    :alg => Tsit5(),
-    :reltol => 1e-5,
-    :abstol => 1e-10,
-)
-
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 
