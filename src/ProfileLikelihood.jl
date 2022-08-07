@@ -9,7 +9,7 @@ using Reexport
 @reexport using OptimizationMetaheuristics
 @reexport using OptimizationNOMAD
 
-export generate_data, relative_error, poisson_error, const_variance_error, likelihood_const
+export generate_data, relative_error, poisson_error, const_variance_error, likelihood_const, likelihood
 
 include("generating_data.jl")
 include("error_functions.jl")
