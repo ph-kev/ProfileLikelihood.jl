@@ -1,8 +1,4 @@
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
-using Revise, ProfileLikelihood
-using DifferentialEquations, Plots, Random, Distributions, LaTeXStrings, BenchmarkTools, Measures
+using ProfileLikelihood, DifferentialEquations, Plots, Distributions
 
 # Define system of ODEs
 # Constants 
@@ -33,11 +29,15 @@ prob = ODEProblem(sis!, u0, tspan, p0);
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 
-perfectData, noisyData = ProfileLikelihood.generate_data(5, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidenceStatus = true, abstol = 1e-10, reltol = 1e-5)
+perfectData, noisyData = generate_data(5, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidence_obs_status = true, abstol = 1e-10, reltol = 1e-5)
 
-plt = plot(times, perfectDataHost)
+plt = plot(times, perfectData)
 plot!(times, noisyData)
 display(plt)
+
+
+
+
 
 
 
