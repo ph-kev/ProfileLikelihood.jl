@@ -15,6 +15,9 @@ Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
 
 [compat]
 OptimizationMetaheuristics = "0.1"
+Optimization = "3"
+OptimizationBBO = "0.1"
+DifferentialEquations = "7"
 julia = "1"
 
 [extras]
