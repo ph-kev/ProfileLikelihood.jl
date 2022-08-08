@@ -32,13 +32,6 @@ u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# solver algorithm, tolerances
-solver_opts = Dict(
-    :alg => Tsit5(),
-    :reltol => 1e-5,
-    :abstol => 1e-10,
-)
-
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 println("The amount of data is ", length(times))
@@ -51,6 +44,6 @@ perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisso
 obj = (data, sol) -> ProfileLikelihood.poisson_error(data, sol)
 
 # True loss value 
-solver_opts = Dict(:abstol => 1e-10, :reltol => 1e-5)
-trueLoss = likelihood(p0, [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj]; incidence_obs = [5, 6], solver_opts = solver_opts)
+solver_diff_opts = Dict(:abstol => 1e-10, :reltol => 1e-5)
+trueLoss = likelihood(p0, [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj]; incidence_obs = [5, 6], solver_diff_opts = solver_diff_opts)
 println("The loss with the true parameters is ", trueLoss, ".")

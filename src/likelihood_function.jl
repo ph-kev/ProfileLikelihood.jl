@@ -1,4 +1,4 @@
-function likelihood(params, data::Vector{Vector{T}}, sol_obs, prob, alg, times, obj_arr; incidence_obs = [], param_index=0, param_eval=0.0, solver_opts = Dict()) where {T<:Real} 
+function likelihood(params, data::Vector{Vector{T}}, sol_obs, prob, alg, times, obj_arr; incidence_obs = [], param_index=0, param_eval=0.0, solver_diff_opts = Dict()) where {T<:Real} 
     sol_obs_copy = vcat(sol_obs, incidence_obs)
     if param_index != 0
         params_copy = copy(params)
@@ -7,14 +7,13 @@ function likelihood(params, data::Vector{Vector{T}}, sol_obs, prob, alg, times, 
     else
         prob_cur = remake(prob, p=params)
     end
-
     # solve odes
     sol = solve(
         prob_cur,
         alg,
         saveat=times,
         save_idxs=sol_obs_copy;
-        solver_opts...
+        solver_diff_opts...
     )
     # loss
     loss = 0.0
