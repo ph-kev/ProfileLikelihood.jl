@@ -1,5 +1,4 @@
-function findThresholdOptimization(confidence, numsParams, loss)
-    threshold = loss + cquantile(Chisq(numsParams), 1 - confidence)
-    println("The threshold to use for optimization is $threshold.")
+function find_threshold(confidence::Real, nums_params::Integer, loss::Real)
+    threshold = loss + cquantile(Chisq(nums_params), 1 - confidence)
     return threshold
 end
