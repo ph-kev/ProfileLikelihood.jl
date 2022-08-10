@@ -50,5 +50,3 @@ println("The loss with the true parameters is ", trueLoss, ".")
 
 loss = likelihood([0.001, 0.09] , [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj]; incidence_obs = [5, 6], param_index=1, param_eval=0.0001, solver_diff_opts = solver_diff_opts)
 println("The loss with the these parameters is ", loss, ".")
-
-
