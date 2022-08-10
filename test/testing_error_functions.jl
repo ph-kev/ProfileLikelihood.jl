@@ -18,4 +18,3 @@ times = [2.0, 5.0, 8.0, 13.0]
     @test likelihood_const("relativeError"; times = times, noise_level = 0.1) ≈ -11.0691724783
     @test relative_error(data, sol, 0.1) ≈ 49.9934302965
 end
-

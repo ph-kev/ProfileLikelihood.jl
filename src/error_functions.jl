@@ -1,16 +1,16 @@
-function relative_error(data, sol, noise_level)
+function relative_error(data::Vector{T}, sol::Vector{T}, noise_level::T) where T<:Real
     return (1 / noise_level^2) * sum(((abs.(sol) - data) ./ abs.(sol)) .^ 2) + 2.0 * sum(log.(abs.(sol)))
 end
 
-function poisson_error(data, sol)
+function poisson_error(data::Vector{T}, sol::Vector{T}) where T<:Real
     return 2*(sum(abs.(sol)) - sum(data .* log.(abs.(sol))))
 end
 
-function const_variance_error(data, sol, sigma)
+function const_variance_error(data::Vector{T}, sol::Vector{T}, sigma::T) where T<:Real
     return (1 / sigma^2) * sum((sol - data) .^ 2)
 end
 
-function likelihood_const(obj; noise_level=0.01, times=Vector{Float64}(), data=Vector{Float64}(), sigma = 1)
+function likelihood_const(obj::String; noise_level=0.01, times=Vector{Real}(), data=Vector{Real}(), sigma = 1.0)
     if obj == "relativeError"
         return length(times) * log(noise_level^2) + length(times) * log(2 * pi)
     elseif obj == "poissonError"
