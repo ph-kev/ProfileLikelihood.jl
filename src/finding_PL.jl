@@ -46,11 +46,12 @@ function go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_o
     return reverse(thetaLeft), reverse(solLeft)
 end
 
-function PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false)
+function find_profile_likelihood(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false, pl_const = 0.0)
     theta_right, sol_right = go_right_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaLeft, solLeft = go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaPoint, solPoint = min_point(param_index, loss, param_fitted)
     theta = vcat(thetaLeft, thetaPoint, theta_right)
     sol = vcat(solLeft, solPoint, sol_right)
+    sol = sol .+ pl_const 
     return theta, sol
 end

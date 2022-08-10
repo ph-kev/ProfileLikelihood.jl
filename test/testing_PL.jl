@@ -58,22 +58,24 @@ opti_prob_opts = Dict(
 )
 
 opti_solver_opts = Dict(
-    :time_limit => 240.0, 
-    :f_calls_limit => 10000000000, 
-    :iterations => 200000000
 )
 
 # Find optimal parameters 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N = 100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts, opti_solver_opts = opti_solver_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts, opti_solver_opts = opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N = 30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], param_eval = 1.5, param_index = 1, solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts, opti_solver_opts = opti_solver_opts)
-println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+# Constants to add back 
+pl_const_1 = likelihood_const("poissonError"; data = noisyDataHost)
+pl_const_2 = likelihood_const("poissonError"; data = noisyDataVector)
+pl_const = pl_const_1 + pl_const_2
+println("The profile likelihood constant is ", pl_const)
 
-loss, paramsFitted = estimate_params([1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], param_eval = 1.5, param_index = 1, solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts)
-println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+# Threshold 
+threshold_simu = find_threshold(0.95, 3, loss)
+threshold_poin = find_threshold(0.95, 1, loss)
 
-
+# beta_h
+theta1, sol1 = find_profile_likelihood(8.333e-7, 60, 1, paramsFitted, [noisyDataHost, noisyDataVector], [], threshold + 3, loss, prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5,6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=false, pl_const = pl_const)
+PLbeta_h = plot(theta1, [sol1, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel = L"\beta_h", ylabel = L"\chi^2_{\rm PL}", yformatter = :plain, legend=:topright, labels = [L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi = 400)
+scatter!([paramsFitted[1]], [loss + pl_const], color = "orange", labels = "Fitted Parameter")
