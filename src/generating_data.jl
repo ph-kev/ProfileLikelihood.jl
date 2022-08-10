@@ -1,4 +1,4 @@
-function generate_data(index, seed, dist, prob, alg, times; incidence_obs_status = false, kwargs...)
+function generate_data(index::Integer, seed::Integer, dist::Function, prob, alg, times::AbstractVector{T}; incidence_obs_status = false, kwargs...) where T<:Real
     if incidence_obs_status == false
         # Solve ODE
         sol = solve(
@@ -25,7 +25,7 @@ function generate_data(index, seed, dist, prob, alg, times; incidence_obs_status
     return perfect_data, noisy_data
 end
 
-function generate_incidence_data(index, prob, alg, times; kwargs...)
+function generate_incidence_data(index::Integer, prob, alg, times::AbstractVector{T}; kwargs...) where T<:Real
     sol = solve(
         prob,
         alg,

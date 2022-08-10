@@ -34,10 +34,3 @@ perfectData, noisyData = generate_data(5, 366, i -> truncated(Poisson(i), lower 
 plt = plot(times, perfectData)
 plot!(times, noisyData)
 display(plt)
-
-
-
-
-
-
-
