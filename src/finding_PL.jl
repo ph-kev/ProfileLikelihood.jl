@@ -1,56 +1,56 @@
-function minPoint(paramIndex, loss, parametersFitted)
-    return [parametersFitted[paramIndex]], [loss]
+function min_point(param_index, loss, param_fitted)
+    return [param_fitted[param_index]], [loss]
 end
 
-function goRightPL(stepSize, maxSteps, paramIndex, parametersFitted, data, solObserved, prob, solver_opts, times, loss, upperBound, fitter_opts, obj, incidenceObserved, order, maxRange, status)
-    thetaRight = Vector{Float64}()
-    solRight = Vector{Float64}()
-    currVal = loss
-    paramsFittedCopy = copy(parametersFitted)
-    paramToLookAt = paramsFittedCopy[paramIndex]
-    paramGuess = deleteat!(paramsFittedCopy, paramIndex)
+function go_right_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false)
+    theta_right = Vector{Real}()
+    sol_right = Vector{Real}()
+    curr_loss = loss
+    param_fitted_copy = copy(param_fitted)
+    param_to_look_at = param_fitted_copy[param_index]
+    param_guess = deleteat!(param_fitted_copy, param_index)
     iter = 0
-    if paramToLookAt + stepSize > fitter_opts[:searchRange][paramIndex][2]
-        return thetaRight, solRight
+    if param_to_look_at + step_size > ub[param_index]
+        return theta_right, sol_right
     end
-    while currVal < upperBound && iter < maxSteps && paramToLookAt < fitter_opts[:searchRange][paramIndex][2]
-        paramToLookAt = paramToLookAt + stepSize
-        append!(thetaRight, paramToLookAt)
-        loss, paramGuess = estimateParams(paramGuess, fitter_opts, data, solObserved, prob, solver_opts, times, obj; incidenceObserved = incidenceObserved, paramIndex=paramIndex, paramEval=paramToLookAt, order = order, maxRange = maxRange, status = status)
-        append!(solRight, loss)
+    while curr_loss < threshold && iter < max_steps && param_to_look_at < ub[param_index]
+        param_to_look_at = param_to_look_at + step_size
+        append!(theta_right, param_to_look_at)
+        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+        append!(sol_right, loss)
         iter = iter + 1
-        currVal = loss
+        curr_loss = loss
     end
-    return thetaRight, solRight
+    return theta_right, sol_right
 end
 
-function goLeftPL(stepSize, maxSteps, paramIndex, parametersFitted, data, solObserved, prob, solver_opts, times, loss, upperBound, fitter_opts, obj, incidenceObserved, order, maxRange, status)
-    thetaLeft = Vector{Float64}()
-    solLeft = Vector{Float64}()
-    currVal = loss
-    paramsFittedCopy = copy(parametersFitted)
-    paramToLookAt = paramsFittedCopy[paramIndex]
-    paramGuess = deleteat!(paramsFittedCopy, paramIndex)
+function go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false)
+    thetaLeft = Vector{Real}()
+    solLeft = Vector{Real}()
+    curr_loss = loss
+    param_fitted_copy = copy(param_fitted)
+    param_to_look_at = param_fitted_copy[param_index]
+    param_guess = deleteat!(param_fitted_copy, param_index)
     iter = 0
-    if paramToLookAt - stepSize < fitter_opts[:searchRange][paramIndex][1]
+    if param_to_look_at - step_size < lb[param_index]
         return reverse(thetaLeft), reverse(solLeft)
     end
-    while currVal < upperBound && iter < maxSteps && paramToLookAt > fitter_opts[:searchRange][paramIndex][1]
-        paramToLookAt = paramToLookAt - stepSize
-        append!(thetaLeft, paramToLookAt)
-        loss, paramGuess = estimateParams(paramGuess, fitter_opts, data, solObserved, prob, solver_opts, times, obj; incidenceObserved = incidenceObserved, paramIndex=paramIndex, paramEval=paramToLookAt, order = order, maxRange = maxRange, status = status)
+    while curr_loss < threshold && iter < max_steps && param_to_look_at > lb[param_index]
+        param_to_look_at = param_to_look_at - step_size
+        append!(thetaLeft, param_to_look_at)
+        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
         append!(solLeft, loss)
         iter = iter + 1
-        currVal = loss
+        curr_loss = loss
     end
     return reverse(thetaLeft), reverse(solLeft)
 end
 
-function PL(stepSize, maxSteps, paramIndex, parametersFitted, data, solObserved, upperBound, loss, prob, solver_opts, times, fitter_opts, obj; incidenceObserved = [], order = 4, maxRange = 1e-4, status = "local")
-    thetaRight, solRight = goRightPL(stepSize, maxSteps, paramIndex, parametersFitted, data, solObserved, prob, solver_opts, times, loss, upperBound, fitter_opts, obj, incidenceObserved, order, maxRange, status)
-    thetaLeft, solLeft = goLeftPL(stepSize, maxSteps, paramIndex, parametersFitted, data, solObserved, prob, solver_opts, times, loss, upperBound, fitter_opts, obj, incidenceObserved, order, maxRange, status)
-    thetaPoint, solPoint = minPoint(paramIndex, loss, parametersFitted)
-    theta = vcat(thetaLeft, thetaPoint, thetaRight)
-    sol = vcat(solLeft, solPoint, solRight)
+function PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false)
+    theta_right, sol_right = go_right_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+    thetaLeft, solLeft = go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+    thetaPoint, solPoint = min_point(param_index, loss, param_fitted)
+    theta = vcat(thetaLeft, thetaPoint, theta_right)
+    sol = vcat(solLeft, solPoint, sol_right)
     return theta, sol
 end
