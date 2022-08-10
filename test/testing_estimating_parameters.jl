@@ -26,7 +26,7 @@ end
 
 # Timespan, true parameters and initial conditions for simulating data
 tspan = (0.0, 40.0)
-p0 = [0.0001, 0.001, 0.09] 
+p0 = [0.0001, 0.001, 0.09]
 u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
@@ -42,9 +42,9 @@ solver_opts = Dict(
 times = LinRange{Float64}(0.0, 30.0, 31)
 
 # Generate data 
-perfectDataHost, noisyDataHost = generate_data(5, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidence_obs_status = true, abstol = 1e-10, reltol = 1e-5)
+perfectDataHost, noisyDataHost = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
-perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidence_obs_status = true, abstol = 1e-10, reltol = 1e-5)
+perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
 # Objective function 
 obj = (data, sol) -> poisson_error(data, sol)
@@ -58,22 +58,20 @@ opti_prob_opts = Dict(
 )
 
 opti_solver_opts = Dict(
-    :time_limit => 240.0, 
-    :f_calls_limit => 10000000000, 
+    :time_limit => 240.0,
+    :f_calls_limit => 10000000000,
     :iterations => 200000000
 )
 
 # Find optimal parameters 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N = 100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts, opti_solver_opts = opti_solver_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N = 30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], param_eval = 1.5, param_index = 1, solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts, opti_solver_opts = opti_solver_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs = [5, 6], param_eval = 1.5, param_index = 1, solver_diff_opts = solver_diff_opts, opti_prob_opts = opti_prob_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
-
-
