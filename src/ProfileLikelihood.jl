@@ -6,8 +6,16 @@ using Reexport
 @reexport using Distributions
 @reexport using Optimization
 @reexport using OptimizationBBO
+@reexport using OptimizationEvolutionary
+@reexport using OptimizationGCMAES
+@reexport using OptimizationMOI
 @reexport using OptimizationMetaheuristics
+@reexport using OptimizationMultistartOptimization
+@reexport using OptimizationNLopt
 @reexport using OptimizationNOMAD
+@reexport using OptimizationOptimisers
+@reexport using OptimizationOptimJL
+@reexport using OptimizationSpeedMapping
 
 export generate_data, relative_error, poisson_error, const_variance_error, likelihood_const, likelihood, find_threshold, estimate_params, find_profile_likelihood
 
