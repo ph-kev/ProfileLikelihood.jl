@@ -64,11 +64,11 @@ opti_solver_opts = Dict(
 )
 
 # Find optimal parameters 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $paramsFitted.")
 
