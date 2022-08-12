@@ -25,6 +25,7 @@ Optimization = "3"
 OptimizationBBO = "0.1"
 OptimizationMetaheuristics = "0.1"
 OptimizationNOMAD = "0.1"
+OptimizationOptimJL = "0.1"
 Reexport = "1"
 julia = "1"
 
