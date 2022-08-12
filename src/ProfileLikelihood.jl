@@ -18,7 +18,7 @@ export generate_data, generate_incidence_data,
 relative_error, poisson_error, const_variance_error, likelihood_const, likelihood, 
 estimate_params, estimate_params_multistart,
 find_threshold, 
-find_profile_likelihood, 
+find_profile_likelihood, find_profile_likelihood_multistart,
 find_roots
 
 include("generating_data.jl")
