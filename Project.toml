@@ -26,6 +26,7 @@ OptimizationBBO = "0.1"
 OptimizationMetaheuristics = "0.1"
 OptimizationNOMAD = "0.1"
 Reexport = "1"
+Roots = "2"
 julia = "1"
 
 [extras]
