@@ -16,6 +16,7 @@ OptimizationNOMAD = "2cab0595-8222-4775-b714-9828e6a9e01b"
 OptimizationOptimJL = "36348300-93cb-4f02-beb5-3c3902f8871e"
 Random = "9a3f8284-a2c9-5f02-9a11-845980a1fd5c"
 Reexport = "189a3867-3050-52da-a836-e630ba90ab69"
+Roots = "f2b01f46-fcfa-551c-844a-d8ac1e96c665"
 
 [compat]
 DifferentialEquations = "7"

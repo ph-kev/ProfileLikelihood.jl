@@ -12,8 +12,14 @@ using Reexport
 @reexport using OptimizationNLopt
 @reexport using OptimizationNOMAD
 @reexport using OptimizationOptimJL
+@reexport using Roots
 
-export generate_data, relative_error, poisson_error, const_variance_error, likelihood_const, likelihood, find_threshold, estimate_params, find_profile_likelihood, estimate_params_multistart
+export generate_data, generate_incidence_data, 
+relative_error, poisson_error, const_variance_error, likelihood_const, likelihood, 
+estimate_params, estimate_params_multistart,
+find_threshold, 
+find_profile_likelihood, 
+find_roots
 
 include("generating_data.jl")
 include("error_functions.jl")
@@ -21,5 +27,6 @@ include("likelihood_function.jl")
 include("estimating_parameters.jl")
 include("threshold.jl")
 include("finding_PL.jl")
+include("processing_data.jl")
 
 end
