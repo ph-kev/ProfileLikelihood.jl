@@ -1,8 +1,5 @@
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
-using Revise, ProfileLikelihood
-using DifferentialEquations, Plots, Random, Distributions, LaTeXStrings, BenchmarkTools, Measures, Interpolations
+# Packages 
+using ProfileLikelihood, DifferentialEquations, Plots, Distributions, LaTeXStrings, Measures, Interpolations
 
 
 # Define system of ODEs
@@ -31,24 +28,18 @@ u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# solver algorithm, tolerances
-solver_opts = Dict(
-    :alg => Tsit5(),
-    :reltol => 1e-5,
-    :abstol => 1e-10,
-)
-
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 
 # Generate data 
-perfectDataHost, noisyDataHost = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
+perfect_data_host, noisy_data_host = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
-perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
+perfect_data_vector, noisy_data_vector = generate_data(6, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
 # Objective function 
 obj = (data, sol) -> poisson_error(data, sol)
 
+# Settings for solving differential equations and optimizer 
 solver_diff_opts = Dict(
     :reltol => 1e-5,
     :abstol => 1e-10
@@ -61,13 +52,13 @@ opti_solver_opts = Dict(
 )
 
 # Find optimal parameters 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+println("The fitted parameters are $fitted_params.")
 
 # Constants to add back 
-pl_const_1 = likelihood_const("poissonError"; data=noisyDataHost)
-pl_const_2 = likelihood_const("poissonError"; data=noisyDataVector)
+pl_const_1 = likelihood_const("poissonError"; data=noisy_data_host)
+pl_const_2 = likelihood_const("poissonError"; data=noisy_data_vector)
 pl_const = pl_const_1 + pl_const_2
 println("The profile likelihood constant is $(pl_const).")
 
@@ -75,10 +66,11 @@ println("The profile likelihood constant is $(pl_const).")
 threshold_simu = find_threshold(0.95, 3, loss)
 threshold_poin = find_threshold(0.95, 1, loss)
 
-# beta_h
-theta1, sol1 = find_profile_likelihood(8.333e-7, 60, 1, paramsFitted, [noisyDataHost, noisyDataVector], [], threshold_simu + 3, loss, prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=false, pl_const=pl_const)
+# Profile likelihood for beta_h
+theta1, sol1 = find_profile_likelihood(8.333e-7, 60, 1, fitted_params, [noisy_data_host, noisy_data_vector], [], threshold_simu + 3, loss, prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=false, pl_const=pl_const)
 PLbeta_h = plot(theta1, [sol1, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel=L"\beta_h", ylabel=L"\chi^2_{\rm PL}", yformatter=:plain, legend=:topright, labels=[L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi=400)
-scatter!([paramsFitted[1]], [loss + pl_const], color="orange", labels="Fitted Parameter")
+scatter!([fitted_params[1]], [loss + pl_const], color="orange", labels="Fitted Parameter")
 
+# Interpolation and find roots 
 beta_h_inter = linear_interpolation(theta1, sol1)
 res = find_roots(beta_h_inter, theta1, threshold_simu + pl_const)

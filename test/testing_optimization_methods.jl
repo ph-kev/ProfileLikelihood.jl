@@ -1,8 +1,5 @@
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
-using Revise, ProfileLikelihood
-using DifferentialEquations, Random, Distributions, BenchmarkTools
+# Packages 
+using ProfileLikelihood, DifferentialEquations, Distributions
 
 
 # Define system of ODEs
@@ -29,13 +26,6 @@ u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# solver algorithm, tolerances
-solver_opts = Dict(
-    :alg => Tsit5(),
-    :reltol => 1e-5,
-    :abstol => 1e-10,
-)
-
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 
@@ -47,6 +37,7 @@ perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisso
 # Objective function 
 obj = (data, sol) -> poisson_error(data, sol)
 
+# Options for solving differential equations 
 solver_diff_opts = Dict(
     :reltol => 1e-5,
     :abstol => 1e-10

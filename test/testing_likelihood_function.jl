@@ -1,10 +1,5 @@
-# Activating ProfileLikelihood package 
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
 # Packages 
-using Revise, ProfileLikelihood
-using DifferentialEquations, Plots, Random, Distributions, LaTeXStrings, BenchmarkTools
+using ProfileLikelihood, DifferentialEquations, Distributions
 
 # Define system of ODEs
 # Constants 
@@ -34,7 +29,7 @@ prob = ODEProblem(sis!, u0, tspan, p0);
 
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
-println("The amount of data is ", length(times))
+println("The amount of data is $(length(times)).")
 
 # Generate data 
 perfectDataHost, noisyDataHost = generate_data(5, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidence_obs_status = true, abstol = 1e-10, reltol = 1e-5)
@@ -46,7 +41,8 @@ obj = (data, sol) -> ProfileLikelihood.poisson_error(data, sol)
 # True loss value 
 solver_diff_opts = Dict(:abstol => 1e-10, :reltol => 1e-5)
 trueLoss = likelihood(p0, [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj]; incidence_obs = [5, 6], solver_diff_opts = solver_diff_opts)
-println("The loss with the true parameters is ", trueLoss, ".")
+println("The loss with the true parameters is $trueLoss.")
 
+# Loss with the parameters [0.0001, 0.001, 0.09]. Should be the same as trueLoss
 loss = likelihood([0.001, 0.09] , [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj]; incidence_obs = [5, 6], param_index=1, param_eval=0.0001, solver_diff_opts = solver_diff_opts)
-println("The loss with the these parameters is ", loss, ".")
+println("The loss with the these parameters is $loss.")

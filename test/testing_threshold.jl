@@ -1,9 +1,5 @@
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
-using Revise, ProfileLikelihood
-using DifferentialEquations, Plots, Random, Distributions, LaTeXStrings, BenchmarkTools, Measures
-
+# Packages 
+using ProfileLikelihood
 using Test
 
 @testset "ProfileLikelihood.jl" begin

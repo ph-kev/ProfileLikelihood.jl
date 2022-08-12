@@ -1,3 +1,4 @@
+# Packages 
 using ProfileLikelihood, DifferentialEquations, Plots, Distributions
 
 # Define system of ODEs
@@ -21,16 +22,19 @@ end
 
 # Timespan, true parameters and initial conditions for simulating data
 tspan = (0.0, 40.0)
-p0 = [0.0001, 0.001, 0.09] 
+p0 = [0.0001, 0.001, 0.09]
 u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
+# ODE Problem
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# times
+# Times to sample data from 
 times = LinRange{Float64}(0.0, 30.0, 31)
 
-perfectData, noisyData = generate_data(5, 366, i -> truncated(Poisson(i), lower = -eps(Float64)), prob, Tsit5(), times; incidence_obs_status = true, abstol = 1e-10, reltol = 1e-5)
+# Generating Data 
+perfect_data, noisy_data = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
-plt = plot(times, perfectData)
-plot!(times, noisyData)
+# Plot data
+plt = plot(times, perfect_data)
+plot!(times, noisy_data)
 display(plt)

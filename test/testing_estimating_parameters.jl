@@ -1,8 +1,5 @@
-using Pkg
-Pkg.activate("ProfileLikelihood.jl")
-
-using Revise, ProfileLikelihood
-using DifferentialEquations, Plots, Random, Distributions, LaTeXStrings, BenchmarkTools, Measures
+# Packages 
+using ProfileLikelihood, DifferentialEquations, Distributions
 
 
 # Define system of ODEs
@@ -31,20 +28,13 @@ u0 = [1.0, 1.0, 1000.0, 5000.0, 1.0, 1.0]
 
 prob = ODEProblem(sis!, u0, tspan, p0);
 
-# solver algorithm, tolerances
-solver_opts = Dict(
-    :alg => Tsit5(),
-    :reltol => 1e-5,
-    :abstol => 1e-10,
-)
-
 # times
 times = LinRange{Float64}(0.0, 30.0, 31)
 
 # Generate data 
-perfectDataHost, noisyDataHost = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
+perfect_data_host, noisy_data_host = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
-perfectDataVector, noisyDataVector = generate_data(6, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
+perfect_data_vector, noisy_data_vector = generate_data(6, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
 
 # Objective function 
 obj = (data, sol) -> poisson_error(data, sol)
@@ -64,14 +54,14 @@ opti_solver_opts = Dict(
 )
 
 # Find optimal parameters 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+println("The fitted parameters are $fitted_params.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+println("The fitted parameters are $fitted_params.")
 
-loss, paramsFitted = estimate_params([1.0, 1.0], [noisyDataHost, noisyDataVector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
+loss, fitted_params = estimate_params([1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
 println("The minimum loss is $loss.")
-println("The fitted parameters are $paramsFitted.")
+println("The fitted parameters are $fitted_params.")
