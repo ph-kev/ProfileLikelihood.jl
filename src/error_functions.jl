@@ -11,11 +11,11 @@ function const_variance_error(data::AbstractVector{T}, sol::AbstractVector{T}, s
 end
 
 function likelihood_const(obj::String; noise_level=0.01, times=Vector{Real}(), data=Vector{Real}(), sigma = 1.0) 
-    if obj == "relativeError"
+    if obj == "relative_error"
         return length(times) * log(noise_level^2) + length(times) * log(2 * pi)
-    elseif obj == "poissonError"
+    elseif obj == "poisson_error"
         return 2*sum(log.(factorial.(big.(data))))
-    elseif obj == "constVarianceError"
+    elseif obj == "const_variance_error"
         return length(times) * log(2 * pi) + length(times) * log(sigma^2)
     else
         return 0.0
