@@ -53,8 +53,15 @@ println("The loss with the true parameters is $(trueLoss).")
 # Initial guess 
 p1 = [1., 1., 1.]
 
+# Options for optimization solver 
+opti_solver_opts = Dict(
+    :time_limit => 200,
+    :f_calls_limit => 100000000,
+    :iterations => 2000000
+)
+
 # Find optimal parameters 
-loss, fitted_params = estimate_params(p1, [noisy_data], [], prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, print_status = true)
+loss, fitted_params = estimate_params(p1, [noisy_data], [], prob, Tsit5(), times, [obj], OptimizationMetaheuristics.DE(N=300), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, opti_solver_opts = opti_solver_opts, print_status = true)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
