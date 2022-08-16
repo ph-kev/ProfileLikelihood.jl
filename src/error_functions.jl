@@ -4,9 +4,9 @@
 The objective function for when the noise in the data follow relative error. 
     
 The objective function is
-```math
-\hat{\\theta} = \arg \min_{\theta} \frac{1}{\eta^2} \sum_{i=1}^{n} \left( \frac{y_i - g(t_i,\theta)}{g(t_i,\theta)} \right)^2 + 2 \sum_{i=1}^n \log g(t_i,\theta)
-```
+
+``\\hat{\\theta} = \\arg \\min_{\\theta} \\frac{1}{\\eta^2} \\sum_{i=1}^{n} \\left( \\frac{y_i - g(t_i,\\theta)}{g(t_i,\\theta)} \\right)^2 + 2 \\sum_{i=1}^n \\log g(t_i,\\theta)``
+
 where ``\\eta`` is the noise level, ``g(t_i,\\theta)`` is the ``i``th point of the predicted solution, and ``y_i`` is the ``i``th data point. 
 """
 function relative_error(data::AbstractVector{T}, sol::AbstractVector{T}, noise_level::T) where T<:Real
@@ -19,9 +19,9 @@ end
 The objective function for when the data follow a Poisson distribution. 
     
 The objective function is
-```math
-\hat{\theta} = \arg \min_{\theta} -\sum_{i=1}^n \log (g(t_i,u,\theta)^{y_i}) + \sum_{i=1}^n g(t_i,u,\theta)
-```
+
+``\\hat{\\theta} = \\arg \\min_{\\theta} -\\sum_{i=1}^n \\log (g(t_i,u,\\theta)^{y_i}) + \\sum_{i=1}^n g(t_i,u,\\theta)``
+
 where ``g(t_i,\\theta)`` is the ``i``th point of the predicted solution and ``y_i`` is the ``i``th data point.
 """
 function poisson_error(data::AbstractVector{T}, sol::AbstractVector{T}) where T<:Real
@@ -33,10 +33,10 @@ end
 
 The objective function for when the data follow a Normal distribution with mean 0 and known variance ``\\sigma^2``. 
     
-The objective function is
-```math
-\hat{\theta} = \arg \min_{\theta} \sum_{i=1}^n (y_i - g(t_i,u,\theta))^2 / \sigma^2
-```
+The objective function is 
+
+``\\hat{\\theta} = \\arg \\min_{\\theta} \\sum_{i=1}^n (y_i - g(t_i,u,\\theta))^2 / \\sigma^2``
+
 where ``g(t_i,\\theta)`` is the ``i``th point of the predicted solution and ``y_i`` is the ``i``th data point.
 """
 function const_variance_error(data::AbstractVector{T}, sol::AbstractVector{T}, sigma::T) where T<:Real
