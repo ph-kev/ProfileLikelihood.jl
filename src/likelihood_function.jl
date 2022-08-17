@@ -9,7 +9,7 @@ function likelihood(params::AbstractVector{<:Real},
                     param_index::Integer=0, 
                     param_eval::Real=0.0, 
                     solver_diff_opts::Dict = Dict())
-                    sol_obs_copy = vcat(sol_obs, incidence_obs)
+    sol_obs_copy = vcat(sol_obs, incidence_obs)
     if param_index != 0 # check if the parameter is fixed or not
         params_copy = copy(params)
         insert!(params_copy, param_index, param_eval)
