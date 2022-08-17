@@ -1,4 +1,9 @@
-function generate_data(index::Integer, seed::Integer, dist::Function, prob::SciMLBase.AbstractDEProblem, alg::SciMLBase.AbstractDEAlgorithm, times::AbstractVector{<:Real}; incidence_obs_status::Bool = false, kwargs...)
+function generate_data(index::Integer, seed::Integer, dist::Function, 
+                       prob::SciMLBase.AbstractDEProblem, 
+                       alg::SciMLBase.AbstractDEAlgorithm, 
+                       times::AbstractVector{<:Real}; 
+                       incidence_obs_status::Bool = false, 
+                       kwargs...)
     if incidence_obs_status == false # check if we are generating incidence data or not 
         sol = solve(
             prob,
@@ -23,7 +28,11 @@ function generate_data(index::Integer, seed::Integer, dist::Function, prob::SciM
     return perfect_data, noisy_data
 end
 
-function generate_incidence_data(index::Integer, prob::SciMLBase.AbstractDEProblem, alg::SciMLBase.AbstractDEAlgorithm, times::AbstractVector{T}; kwargs...) where T<:Real
+function generate_incidence_data(index::Integer, 
+                                 prob::SciMLBase.AbstractDEProblem, 
+                                 alg::SciMLBase.AbstractDEAlgorithm, 
+                                 times::AbstractVector{<:Real}; 
+                                 kwargs...)
     sol = solve(
         prob,
         alg,
@@ -35,9 +44,11 @@ function generate_incidence_data(index::Integer, prob::SciMLBase.AbstractDEProbl
     perfect_data = Vector{Float64}()
     for i in eachindex(cumulative_data)
         if i == 1
-            append!(perfect_data, 0) # First data point of incidence data is always 0
+            # First data point of incidence data is always 0
+            append!(perfect_data, 0) 
         else 
-            append!(perfect_data, sol(times[i]) - sol(times[i-1])) # Incidence data is Δ(C(t) - C(t-1))
+            # Incidence data is Δ(C(t) - C(t-1))
+            append!(perfect_data, sol(times[i]) - sol(times[i-1])) 
         end
     end
     return perfect_data
@@ -47,9 +58,11 @@ function generate_incidence_data(sol::AbstractVector{<:Real})
     incidence_data = Vector{Float64}()
     for i in eachindex(sol)
         if i == 1
-            append!(incidence_data, 0) # First data point of incidence data is always 0
+            # First data point of incidence data is always 0
+            append!(incidence_data, 0) 
         else 
-            append!(incidence_data, sol[i] - sol[i-1]) # Incidence data is Δ(C(t) - C(t-1))
+            # Incidence data is Δ(C(t) - C(t-1))
+            append!(incidence_data, sol[i] - sol[i-1]) 
         end
     end
     return incidence_data

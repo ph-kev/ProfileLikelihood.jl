@@ -33,6 +33,7 @@ times = LinRange{Float64}(0.0, 30.0, 31)
 
 # Generating Data 
 perfect_data, noisy_data = generate_data(5, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; incidence_obs_status=true, abstol=1e-10, reltol=1e-5)
+perfect_data1, noisy_data1 = generate_data(1, 366, i -> truncated(Poisson(i), lower=-eps(Float64)), prob, Tsit5(), times; abstol=1e-10, reltol=1e-5)
 
 # Plot data
 plt = plot(times, perfect_data)
