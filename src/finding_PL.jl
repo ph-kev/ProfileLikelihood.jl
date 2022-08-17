@@ -29,7 +29,11 @@ function go_right_PL(step_size::Real, max_steps::Integer, param_index::Integer,
     while curr_loss < threshold && iter < max_steps && param_to_look_at < ub[param_index]
         param_to_look_at = param_to_look_at + step_size
         append!(theta_right, param_to_look_at)
-        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, 
+        times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, 
+        param_index=param_index, param_eval=param_to_look_at, 
+        solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, 
+        opti_solver_opts=opti_solver_opts, print_status=print_status)
         append!(sol_right, loss)
         iter = iter + 1
         curr_loss = loss
@@ -64,7 +68,11 @@ function go_left_PL(step_size::Real, max_steps::Integer, param_index::Integer,
     while curr_loss < threshold && iter < max_steps && param_to_look_at > lb[param_index]
         param_to_look_at = param_to_look_at - step_size
         append!(thetaLeft, param_to_look_at)
-        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+        loss, param_guess = estimate_params(param_guess, data, sol_obs, prob, alg_diff, 
+        times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, 
+        param_index=param_index, param_eval=param_to_look_at, 
+        solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, 
+        opti_solver_opts=opti_solver_opts, print_status=print_status)
         append!(solLeft, loss)
         iter = iter + 1
         curr_loss = loss
@@ -87,8 +95,16 @@ function find_profile_likelihood(step_size::Real, max_steps::Integer, param_inde
                                  solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                                  opti_solver_opts::Dict=Dict(), 
                                  print_status::Bool=false, pl_const::Real=0.0) 
-    theta_right, sol_right = go_right_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
-    thetaLeft, solLeft = go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+    theta_right, sol_right = go_right_PL(step_size, max_steps, param_index, param_fitted, 
+    data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; 
+    incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, 
+    opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, 
+    print_status=print_status)
+    thetaLeft, solLeft = go_left_PL(step_size, max_steps, param_index, param_fitted, data, 
+    sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; 
+    incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, 
+    opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, 
+    print_status=print_status)
     thetaPoint, solPoint = min_point(param_index, loss, param_fitted)
     theta = vcat(thetaLeft, thetaPoint, theta_right)
     sol = vcat(solLeft, solPoint, sol_right)
@@ -123,7 +139,11 @@ function go_right_PL_multistart(step_size::Real, max_steps::Integer, param_index
     while curr_loss < threshold && iter < max_steps && param_to_look_at < ub[param_index]
         param_to_look_at = param_to_look_at + step_size
         append!(theta_right, param_to_look_at)
-        loss, param_guess = estimate_params_multistart(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+        loss, param_guess = estimate_params_multistart(param_guess, data, sol_obs, prob, 
+        alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; 
+        incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, 
+        solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, 
+        opti_solver_opts=opti_solver_opts, print_status=print_status)
         append!(sol_right, loss)
         iter = iter + 1
         curr_loss = loss
@@ -159,7 +179,11 @@ function go_left_PL_multistart(step_size::Real, max_steps::Integer, param_index:
     while curr_loss < threshold && iter < max_steps && param_to_look_at > lb[param_index]
         param_to_look_at = param_to_look_at - step_size
         append!(thetaLeft, param_to_look_at)
-        loss, param_guess = estimate_params_multistart(param_guess, data, sol_obs, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+        loss, param_guess = estimate_params_multistart(param_guess, data, sol_obs, prob, 
+        alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; 
+        incidence_obs=incidence_obs, param_index=param_index, param_eval=param_to_look_at, 
+        solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, 
+        opti_solver_opts=opti_solver_opts, print_status=print_status)
         append!(solLeft, loss)
         iter = iter + 1
         curr_loss = loss
@@ -176,14 +200,22 @@ function find_profile_likelihood_multistart(step_size::Real, max_steps::Integer,
                                             alg_diff::SciMLBase.AbstractDEAlgorithm,  
                                             times::AbstractVector{<:Real}, 
                                             obj_arr::AbstractVector, 
-                                            alg_opti, 
-                                            alg_opti_local, lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
+                                            alg_opti, alg_opti_local, 
+                                            lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
                                             incidence_obs::AbstractVector{<:Integer}=[], 
                                             solver_diff_opts=Dict(), opti_prob_opts=Dict(), 
                                             opti_solver_opts=Dict(), 
                                             print_status::Bool=false, pl_const::Real=0.0) 
-    theta_right, sol_right = go_right_PL_multistart(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
-    thetaLeft, solLeft = go_left_PL_multistart(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
+    theta_right, sol_right = go_right_PL_multistart(step_size, max_steps, param_index, 
+    param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, 
+    alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, 
+    opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, 
+    print_status=print_status)
+    thetaLeft, solLeft = go_left_PL_multistart(step_size, max_steps, param_index, 
+    param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, 
+    alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, 
+    opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, 
+    print_status=print_status)
     thetaPoint, solPoint = min_point(param_index, loss, param_fitted)
     theta = vcat(thetaLeft, thetaPoint, theta_right)
     sol = vcat(solLeft, solPoint, sol_right)
