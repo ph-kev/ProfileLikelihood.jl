@@ -44,9 +44,6 @@ solver_diff_opts = Dict(
     :abstol => 1e-10
 )
 
-opti_prob_opts = Dict(
-)
-
 opti_solver_opts = Dict(
     :time_limit => 240.0,
     :f_calls_limit => 10000000000,
@@ -54,18 +51,18 @@ opti_solver_opts = Dict(
 )
 
 # Find optimal parameters 
-loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], Int64[], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=100), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
-loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], Int64[], prob, Tsit5(), times, [obj, obj], OptimizationMetaheuristics.DE(N=30), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
-loss, fitted_params = estimate_params([1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
+loss, fitted_params = estimate_params([1.0, 1.0], [noisy_data_host, noisy_data_vector], Int64[], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
-loss, fitted_params = estimate_params_multistart([1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], MultistartOptimization.TikTak(300), NLopt.LN_NELDERMEAD(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
+loss, fitted_params = estimate_params_multistart([1.0, 1.0], [noisy_data_host, noisy_data_vector], Int64[], prob, Tsit5(), times, [obj, obj], MultistartOptimization.TikTak(300), NLopt.LN_NELDERMEAD(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")

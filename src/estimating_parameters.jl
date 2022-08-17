@@ -1,6 +1,6 @@
 function estimate_params(p0::AbstractVector{<:Real}, 
                          data::AbstractVector{<:AbstractVector{<:Real}}, 
-                         sol_obs::AbstractVector{Any}, 
+                         sol_obs::AbstractVector{<:Integer}, 
                          prob::SciMLBase.AbstractDEProblem, 
                          alg_diff::SciMLBase.AbstractDEAlgorithm, 
                          times::AbstractVector{<:Real}, obj_arr::AbstractVector, 
@@ -37,7 +37,7 @@ end
 
 function estimate_params_multistart(p0::AbstractVector{<:Real}, 
                                     data::AbstractVector{<:AbstractVector{<:Real}}, 
-                                    sol_obs::AbstractVector{Any}, 
+                                    sol_obs::AbstractVector{<:Integer}, 
                                     prob::SciMLBase.AbstractDEProblem, 
                                     alg_diff::SciMLBase.AbstractDEAlgorithm, 
                                     times::AbstractVector{<:Real}, 

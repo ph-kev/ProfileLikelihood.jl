@@ -52,7 +52,7 @@ opti_solver_opts = Dict(
 )
 
 # Find optimal parameters 
-loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
+loss, fitted_params = estimate_params([1.0, 1.0, 1.0], [noisy_data_host, noisy_data_vector], Int64[], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
@@ -67,7 +67,7 @@ threshold_simu = find_threshold(0.95, 3, loss)
 threshold_poin = find_threshold(0.95, 1, loss)
 
 # Profile likelihood for beta_h
-theta1, sol1 = find_profile_likelihood(8.333e-7, 60, 1, fitted_params, [noisy_data_host, noisy_data_vector], [], threshold_simu + 3, loss, prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=false, pl_const=pl_const)
+theta1, sol1 = find_profile_likelihood(8.333e-7, 60, 1, fitted_params, [noisy_data_host, noisy_data_vector], Int64[], threshold_simu + 3, loss, prob, Tsit5(), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=false, pl_const=pl_const)
 PLbeta_h = plot(theta1, [sol1, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel=L"\beta_h", ylabel=L"\chi^2_{\rm PL}", yformatter=:plain, legend=:topright, labels=[L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi=400)
 scatter!([fitted_params[1]], [loss + pl_const], color="orange", labels="Fitted Parameter")
 

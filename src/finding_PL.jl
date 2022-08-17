@@ -1,8 +1,21 @@
-function min_point(param_index::Integer, loss, param_fitted::AbstractVector{T}) where {T<:Real}
+function min_point(param_index::Integer, loss::Real, param_fitted::AbstractVector{<:Real}) 
     return [param_fitted[param_index]], [loss]
 end
 
-function go_right_PL(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
+function go_right_PL(step_size::Real, max_steps::Integer, param_index::Integer, 
+                     param_fitted::AbstractVector{<:Real}, 
+                     data::AbstractVector{<:AbstractVector{<:Real}}, 
+                     sol_obs::AbstractVector{<:Integer}, 
+                     threshold::Real, loss::Real, 
+                     prob::SciMLBase.AbstractDEProblem, 
+                     alg_diff::SciMLBase.AbstractDEAlgorithm, 
+                     times::AbstractVector{<:Real}, 
+                     obj_arr::AbstractVector, 
+                     alg_opti, 
+                     lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
+                     incidence_obs::AbstractVector{<:Integer}=[], 
+                     solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
+                     opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
     theta_right = Vector{Real}()
     sol_right = Vector{Real}()
     curr_loss = loss
@@ -24,7 +37,20 @@ function go_right_PL(step_size::T, max_steps::Integer, param_index::Integer, par
     return theta_right, sol_right
 end
 
-function go_left_PL(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
+function go_left_PL(step_size::Real, max_steps::Integer, param_index::Integer, 
+                    param_fitted::AbstractVector{<:Real}, 
+                    data::AbstractVector{<:AbstractVector{<:Real}}, 
+                    sol_obs::AbstractVector{<:Integer}, 
+                    threshold::Real, loss::Real, 
+                    prob::SciMLBase.AbstractDEProblem, 
+                    alg_diff::SciMLBase.AbstractDEAlgorithm, 
+                    times::AbstractVector{<:Real}, 
+                    obj_arr::AbstractVector, 
+                    alg_opti, 
+                    lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
+                    incidence_obs::AbstractVector{<:Integer}=[],  
+                    solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
+                    opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
     thetaLeft = Vector{Real}()
     solLeft = Vector{Real}()
     curr_loss = loss
@@ -46,7 +72,21 @@ function go_left_PL(step_size::T, max_steps::Integer, param_index::Integer, para
     return reverse(thetaLeft), reverse(solLeft)
 end
 
-function find_profile_likelihood(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false, pl_const=0.0) where {T<:Real}
+function find_profile_likelihood(step_size::Real, max_steps::Integer, param_index::Integer,
+                                 param_fitted::AbstractVector{<:Real}, 
+                                 data::AbstractVector{<:AbstractVector{<:Real}}, 
+                                 sol_obs::AbstractVector{<:Integer}, 
+                                 threshold::Real, loss::Real, 
+                                 prob::SciMLBase.AbstractDEProblem, 
+                                 alg_diff::SciMLBase.AbstractDEAlgorithm,
+                                 times::AbstractVector{<:Real},
+                                 obj_arr::AbstractVector, 
+                                 alg_opti, 
+                                 lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
+                                 incidence_obs=[], 
+                                 solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
+                                 opti_solver_opts::Dict=Dict(), 
+                                 print_status::Bool=false, pl_const::Real=0.0) 
     theta_right, sol_right = go_right_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaLeft, solLeft = go_left_PL(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaPoint, solPoint = min_point(param_index, loss, param_fitted)
@@ -56,7 +96,7 @@ function find_profile_likelihood(step_size::T, max_steps::Integer, param_index::
     return theta, sol
 end
 
-function go_right_PL_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
+function go_right_PL_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{<:Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
     theta_right = Vector{Real}()
     sol_right = Vector{Real}()
     curr_loss = loss
@@ -78,7 +118,7 @@ function go_right_PL_multistart(step_size::T, max_steps::Integer, param_index::I
     return theta_right, sol_right
 end
 
-function go_left_PL_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
+function go_left_PL_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{<:Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false) where {T<:Real}
     thetaLeft = Vector{Real}()
     solLeft = Vector{Real}()
     curr_loss = loss
@@ -100,7 +140,7 @@ function go_left_PL_multistart(step_size::T, max_steps::Integer, param_index::In
     return reverse(thetaLeft), reverse(solLeft)
 end
 
-function find_profile_likelihood_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false, pl_const=0.0) where {T<:Real}
+function find_profile_likelihood_multistart(step_size::T, max_steps::Integer, param_index::Integer, param_fitted::AbstractVector{T}, data::Vector{Vector{T}}, sol_obs::AbstractVector{<:Any}, threshold::T, loss::T, prob, alg_diff, times::AbstractVector{T}, obj_arr::AbstractVector, alg_opti, alg_opti_local, lb::AbstractVector{T}, ub::AbstractVector{T}; incidence_obs=[], solver_diff_opts=Dict(), opti_prob_opts=Dict(), opti_solver_opts=Dict(), print_status=false, pl_const=0.0) where {T<:Real}
     theta_right, sol_right = go_right_PL_multistart(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaLeft, solLeft = go_left_PL_multistart(step_size, max_steps, param_index, param_fitted, data, sol_obs, threshold, loss, prob, alg_diff, times, obj_arr, alg_opti, alg_opti_local, lb, ub; incidence_obs=incidence_obs, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts, opti_solver_opts=opti_solver_opts, print_status=print_status)
     thetaPoint, solPoint = min_point(param_index, loss, param_fitted)

@@ -54,31 +54,31 @@ opti_solver_opts = Dict(
 
 # Optimization Benchmarks for a variety of algorithms which is not at all comprehensive 
 println("Metaheuristics")
-loss1, paramsFitted1 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], OptimizationMetaheuristics.DE(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_solver_opts=opti_solver_opts)
+loss1, paramsFitted1 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], OptimizationMetaheuristics.DE(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts, opti_solver_opts=opti_solver_opts)
 
 # NOMAD 
 println("NOMAD")
-loss2, paramsFitted2 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts)
+loss2, paramsFitted2 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts)
 
 # NOMAD (smaller bounds)
 println("NOMAD (smaller bounds)")
-loss, paramsFitted = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [5.0, 5.0, 5.0, 5.0, 5.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts)
+loss, paramsFitted = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [5.0, 5.0, 5.0, 5.0, 5.0]; incidence_obs=[5, 6], solver_diff_opts=solver_diff_opts)
 
 # Evolutionary 
 println("Evolutionary")
-loss3, paramsFitted3 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], Evolutionary.CMAES(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
+loss3, paramsFitted3 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], Evolutionary.CMAES(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
 
 # Evolutionary (smaller bounds)
 println("Evolutionary (smaller bounds)")
-loss4, paramsFitted4 = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], Evolutionary.CMAES(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [3.0, 3.0, 3.0, 3.0, 3.0]; incidence_obs=[5, 6])
+loss4, paramsFitted4 = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], Evolutionary.CMAES(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [3.0, 3.0, 3.0, 3.0, 3.0]; incidence_obs=[5, 6])
 
 # MultiStartOptimization and NLOpt
 println("MultiStartOptimization and NLOpt (LN_NELDERMEAD)")
-loss5, paramsFitted5 = @time estimate_params_multistart([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], MultistartOptimization.TikTak(100), NLopt.LN_NELDERMEAD(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
+loss5, paramsFitted5 = @time estimate_params_multistart([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], MultistartOptimization.TikTak(100), NLopt.LN_NELDERMEAD(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
 
 # MultiStartOptimization and NLOpt
 println("MultiStartOptimization and NLOpt (LN_SBPLX)")
-loss6, paramsFitted6 = @time estimate_params_multistart([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], MultistartOptimization.TikTak(100), NLopt.LN_SBPLX(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
+loss6, paramsFitted6 = @time estimate_params_multistart([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], MultistartOptimization.TikTak(100), NLopt.LN_SBPLX(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
 
 # BBO
 opti_solver_opts = Dict(
@@ -86,15 +86,15 @@ opti_solver_opts = Dict(
     :TraceInterval => 50.0
 )
 println("BBO")
-loss7, paramsFitted7 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], BBO_generating_set_search(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], opti_solver_opts = opti_solver_opts)
+loss7, paramsFitted7 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], BBO_generating_set_search(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6], opti_solver_opts = opti_solver_opts)
 
 # Optim
 println("Optim")
-loss8, paramsFitted8 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], Optim.ParticleSwarm(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
+loss8, paramsFitted8 = @time estimate_params([12.0, 12.0, 12.0, 12.0, 12.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], Optim.ParticleSwarm(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [25.0, 25.0, 25.0, 25.0, 25.0]; incidence_obs=[5, 6])
 
 # Optim (smaller bounds)
 println("Optim (smaller bounds)")
-loss9, paramsFitted9 = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], [], prob, AutoVern7(Rodas4()), times, [obj, obj], Optim.ParticleSwarm(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [5.0, 5.0, 5.0, 5.0, 5.0]; incidence_obs=[5, 6])
+loss9, paramsFitted9 = @time estimate_params([2.0, 2.0, 2.0, 2.0, 2.0], [noisyDataHost, noisyDataVector], Int64[], prob, AutoVern7(Rodas4()), times, [obj, obj], Optim.ParticleSwarm(), [eps(Float64), eps(Float64), eps(Float64), eps(Float64), eps(Float64)], [5.0, 5.0, 5.0, 5.0, 5.0]; incidence_obs=[5, 6])
 
 # Print stuff 
 println("Metaheuristics (DE): The minimum loss is $loss1.")

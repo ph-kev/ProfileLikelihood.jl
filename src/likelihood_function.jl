@@ -1,6 +1,6 @@
 function likelihood(params::AbstractVector{<:Real}, 
                     data::AbstractVector{<:AbstractVector{<:Real}},
-                    sol_obs::AbstractVector{Any}, 
+                    sol_obs::AbstractVector{<:Integer}, 
                     prob::SciMLBase.AbstractDEProblem, 
                     alg::SciMLBase.AbstractDEAlgorithm, 
                     times::AbstractVector{<:Real}, 
