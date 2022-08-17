@@ -11,7 +11,6 @@ function generate_data(index::Integer, seed::Integer, dist::Function, prob, alg,
         perfect_data = abs.(sol[1,:])
     else
         perfect_data = generate_incidence_data(index, prob, alg, times; kwargs...)
-        perfect_data = abs.(perfect_data)
     end
     # Set seed for reproducibility 
     Random.seed!(seed)
