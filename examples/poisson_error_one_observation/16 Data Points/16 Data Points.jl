@@ -47,15 +47,15 @@ solver_diff_opts = Dict(
 obj = (data, sol) -> poisson_error(data, sol)
 
 # True loss value 
-trueLoss = likelihood(p0, [noisy_data], [], prob, Tsit5(), times, [obj]; incidence_obs = [5], solver_diff_opts = solver_diff_opts)
-println("The loss with the true parameters is $(trueLoss).")
+true_loss = likelihood(p0, [noisy_data], Int64[], prob, Tsit5(), times, [obj]; incidence_obs = [5], solver_diff_opts = solver_diff_opts)
+println("The loss with the true parameters is $(true_loss).")
 
 # Initial guess 
 p1 = [2., 2., 2.]
 # p1 = [8.092420247324115e-5, 0.001288163738582411, 0.11906515566678236]
 
 # Find optimal parameters 
-loss, fitted_params = estimate_params(p1, [noisy_data], [], prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts)
+loss, fitted_params = estimate_params(p1, [noisy_data], Int64[], prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [2.0, 2.0, 2.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
 
@@ -78,14 +78,14 @@ println("The profile likelihood constant is $(pl_const).")
 
 # Finding profile likelihood 
 # beta_h
-theta1, sol1 = find_profile_likelihood_multistart(1e-5, 500, 1, fitted_params, [noisy_data], [], threshold_simu + 3, loss, prob, Tsit5(), times, [obj], MultistartOptimization.TikTak(300), NLopt.LN_NELDERMEAD(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 10.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const, print_status = true)
+theta1, sol1 = find_profile_likelihood_multistart(1e-5, 500, 1, fitted_params, [noisy_data], Int64[], threshold_simu + 3, loss, prob, Tsit5(), times, [obj], MultistartOptimization.TikTak(300), NLopt.LN_NELDERMEAD(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 10.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const, print_status = true)
 PLbeta_h = plot(theta1, [sol1, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel = L"\beta_h", ylabel = L"\chi^2_{\rm PL}", yformatter = :plain, legend=:topright, labels = [L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi = 400)
 scatter!([fitted_params[1]], [loss + pl_const], color = "orange", labels = "Fitted Parameter")
 display(PLbeta_h)
 savefig(PLbeta_h, "PLbeta_h.png")
 
 # beta_v 
-theta2, sol2 = find_profile_likelihood(2e-4, 200, 2, fitted_params, [noisy_data], [], threshold_simu + 0.5, loss, prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 100.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const, print_status = false)
+theta2, sol2 = find_profile_likelihood(2e-4, 200, 2, fitted_params, [noisy_data], Int64[], threshold_simu + 0.5, loss, prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 100.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const, print_status = false)
 deleteat!(theta2, 1)
 deleteat!(sol2, 1)
 PLbeta_v = plot(theta2, [sol2, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel = L"\beta_v", ylabel = L"\chi^2_{\rm PL}", yformatter = :plain, legend=:topright, labels = [L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi = 400)
@@ -94,7 +94,7 @@ display(PLbeta_v)
 savefig(PLbeta_v, "PLbeta_v.png")
 
 # gamma
-theta3, sol3 = find_profile_likelihood(0.1, 1000, 3, fitted_params, [noisy_data], [], threshold_simu + 3, loss, prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 1000.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const)
+theta3, sol3 = find_profile_likelihood(0.1, 1000, 3, fitted_params, [noisy_data], Int64[], threshold_simu + 3, loss, prob, Tsit5(), times, [obj], NOMADOpt(), [eps(Float64), eps(Float64), eps(Float64)], [4.0, 4.0, 1000.0]; incidence_obs = [5], solver_diff_opts=solver_diff_opts, pl_const = pl_const)
 PLgamma = plot(theta3, [sol3, (x) -> (threshold_simu + pl_const), (x) -> (threshold_poin + pl_const)], xlabel = L"\gamma", ylabel = L"\chi^2_{\rm PL}", yformatter = :plain, legend=:topright, labels = [L"\chi^2_{\rm PL}" "Simultaneous Threshold" "Pointwise Threshold"], right_margin=5mm, dpi = 400)
 scatter!([fitted_params[3]], [loss + pl_const], color = "orange", labels = "Fitted Parameter")
 display(PLgamma)
