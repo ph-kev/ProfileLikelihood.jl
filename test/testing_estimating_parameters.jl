@@ -65,3 +65,7 @@ println("The fitted parameters are $fitted_params.")
 loss, fitted_params = estimate_params([1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], NOMADOpt(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
 println("The minimum loss is $loss.")
 println("The fitted parameters are $fitted_params.")
+
+loss, fitted_params = estimate_params_multistart([1.0, 1.0], [noisy_data_host, noisy_data_vector], [], prob, Tsit5(), times, [obj, obj], MultistartOptimization.TikTak(300), NLopt.LN_NELDERMEAD(), [0.0, 0.0, 0.0], [2.0, 2.0, 2.0]; incidence_obs=[5, 6], param_eval=1.5, param_index=1, solver_diff_opts=solver_diff_opts, opti_prob_opts=opti_prob_opts)
+println("The minimum loss is $loss.")
+println("The fitted parameters are $fitted_params.")
