@@ -63,9 +63,23 @@ relative error or constant variance error or when the data is assumed to follow 
 distribution.
 
 The constant for the likelihood function is often dropped when finding the minimizer of the 
-likelihood function. For relative error, the constant is 
+likelihood function. We typically add this back when generating the profile likelihood plots. 
+For relative error, the constant is 
 
-TODO
+``n \\log η^2 + n \\log 2 π``
+
+where ``η`` is the noise level and ``n`` is the number of data points. For constant variance 
+error, the constant is 
+
+``n \\log 2π + n \\log σ^2``
+
+where ``σ`` is the standard deviation of the error and ``n`` is the number of data points.
+For poisson error, the constant is 
+
+``\\sum_{i=1}^n \\log (y_i!)``
+
+where ``n`` is the number of data points and ``y_i`` is the ``i``th data point of the 
+observable ``y``. 
 """
 function likelihood_const(obj::String; 
                           noise_level::Real=0.0, 

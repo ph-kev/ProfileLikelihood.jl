@@ -1,3 +1,36 @@
+"""
+    likelihood(params::AbstractVector{<:Real}, 
+               data::AbstractVector{<:AbstractVector{<:Real}},
+               sol_obs::AbstractVector{<:Integer}, 
+               prob::SciMLBase.AbstractDEProblem, 
+               alg::SciMLBase.AbstractDEAlgorithm, 
+               times::AbstractVector{<:Real}, 
+               obj_arr::AbstractVector; 
+               incidence_obs::AbstractVector{<:Integer} = [], 
+               param_index::Integer=0, 
+               param_eval::Real=0.0, 
+               solver_diff_opts::Dict = Dict())
+
+
+
+# Arguments
+- `params::AbstractVector{<:Real}`
+- `data::AbstractVector{<:AbstractVector{<:Real}}`
+- `sol_obs::AbstractVector{<:Integer}` 
+- `prob::SciMLBase.AbstractDEProblem` 
+- `alg::SciMLBase.AbstractDEAlgorithm` 
+- `times::AbstractVector{<:Real}` 
+- `obj_arr::AbstractVector`
+
+# Keywords
+- `incidence_obs::AbstractVector{<:Integer} = []` 
+- `param_index::Integer=0` 
+- `param_eval::Real=0.0` 
+- `solver_diff_opts::Dict = Dict()`
+
+# Returns
+- `loss`: 
+"""
 function likelihood(params::AbstractVector{<:Real}, 
                     data::AbstractVector{<:AbstractVector{<:Real}},
                     sol_obs::AbstractVector{<:Integer}, 

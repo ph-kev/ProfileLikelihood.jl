@@ -1,3 +1,30 @@
+"""
+    generate_data(index::Integer, seed::Integer, dist::Function, 
+                  prob::SciMLBase.AbstractDEProblem, 
+                  alg::SciMLBase.AbstractDEAlgorithm, 
+                  times::AbstractVector{<:Real}; 
+                  incidence_obs_status::Bool = false, 
+                  kwargs...)
+                  
+This generates perfect and noisy data and incidence data of the state variables of the 
+system of differential equations. 
+
+# Arguments
+- `index::Integer`: the array to search
+- `seed::Integer`: 
+- `dist::Function`: 
+- `prob::SciMLBase.AbstractDEProblem`: 
+- `alg::SciMLBase.AbstractDEAlgorithm`: 
+- `times::AbstractVector{<:Real}`: 
+
+# Keywords
+- `incidence_obs_status::Bool = false`: 
+- `kwargs...`: 
+
+# Returns
+- `perfect_data`: 
+- `noisy_data`: 
+"""
 function generate_data(index::Integer, seed::Integer, dist::Function, 
                        prob::SciMLBase.AbstractDEProblem, 
                        alg::SciMLBase.AbstractDEAlgorithm, 
@@ -28,6 +55,25 @@ function generate_data(index::Integer, seed::Integer, dist::Function,
     return perfect_data, noisy_data
 end
 
+"""
+    generate_incidence_data(index::Integer, 
+                            prob::SciMLBase.AbstractDEProblem, 
+                            alg::SciMLBase.AbstractDEAlgorithm, 
+                            times::AbstractVector{<:Real}; 
+                            kwargs...)
+
+# Arguments
+- `index::Integer`: the array to search
+- `prob::SciMLBase.AbstractDEProblem`: 
+- `alg::SciMLBase.AbstractDEAlgorithm`: 
+- `times::AbstractVector{<:Real}`: 
+
+# Keywords
+- `kwargs...`: 
+
+# Returns
+- `incidence_data`: 
+"""
 function generate_incidence_data(index::Integer, 
                                  prob::SciMLBase.AbstractDEProblem, 
                                  alg::SciMLBase.AbstractDEAlgorithm, 
