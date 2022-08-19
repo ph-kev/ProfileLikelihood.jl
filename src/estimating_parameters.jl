@@ -29,7 +29,7 @@ Estimation of parameters is done using the objective function array `obj_arr` wh
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords
-- `incidence_obs::AbstractVector{<:Int}=[]`: Indices of the state variables of the DEs to find incidence data of which is used for sampling data points. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Int}=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `param_index::Int=0`: Index of the parameter vector that is fixed. 
 - `param_eval::Real=0.0`: Value for the fixed parameter. 
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.

@@ -9,21 +9,25 @@
 This generates perfect and noisy data and incidence data of the state variables of the 
 system of differential equations. 
 
+Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
+where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+
 # Arguments
-- `index::Integer`: the array to search
-- `seed::Integer`: 
-- `dist::Function`: 
-- `prob::SciMLBase.AbstractDEProblem`: 
-- `alg::SciMLBase.AbstractDEAlgorithm`: 
-- `times::AbstractVector{<:Real}`: 
+- `index::Integer`: Index of the component of the state variables for data collection.
+- `seed::Integer`: Seed of RNG generator. Set for reproducible results. 
+- `dist::Function`: Function to generate noisy data. The inputs are the data points sampled at points in `times`.
+- `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
+- `alg::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
+- `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
 
 # Keywords
-- `incidence_obs_status::Bool = false`: 
-- `kwargs...`: 
+- `incidence_obs_status::Bool = false`: Determine whether the data is incidence data or not. If `true`, the `index`th state variable must be cumulative data.
+- `kwargs...`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 
 # Returns
-- `perfect_data`: 
-- `noisy_data`: 
+- `perfect_data`: Data without noise.
+- `noisy_data`: Data with noise according to `dist`.
 """
 function generate_data(index::Integer, seed::Integer, dist::Function, 
                        prob::SciMLBase.AbstractDEProblem, 
@@ -62,17 +66,23 @@ end
                             times::AbstractVector{<:Real}; 
                             kwargs...)
 
+This generates incidence data without noise by solving the DEs and computing incidence data from cumulative data according to the `index`th state variable.
+
+Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
+where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+
 # Arguments
-- `index::Integer`: the array to search
-- `prob::SciMLBase.AbstractDEProblem`: 
-- `alg::SciMLBase.AbstractDEAlgorithm`: 
-- `times::AbstractVector{<:Real}`: 
+- `index::Integer`: Index of the component of the state variables for data collection.
+- `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
+- `alg::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
+- `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
 
 # Keywords
-- `kwargs...`: 
+- `kwargs...`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 
 # Returns
-- `incidence_data`: 
+- `incidence_data`: Incidence data of the `index`th state variable which represents cumulative data.
 """
 function generate_incidence_data(index::Integer, 
                                  prob::SciMLBase.AbstractDEProblem, 
@@ -100,6 +110,21 @@ function generate_incidence_data(index::Integer,
     return perfect_data
 end 
 
+"""
+    generate_incidence_data(sol::AbstractVector{<:Real}) 
+
+This generates incidence data from cumulative data.
+
+Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
+where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+
+# Arguments
+- `sol::AbstractVector{<:Real}`: Vector of cumulative data.
+
+# Returns
+- `incidence_data`: Incidence data calculated from incidence data.
+"""
 function generate_incidence_data(sol::AbstractVector{<:Real}) 
     incidence_data = Vector{Float64}()
     for i in eachindex(sol)
