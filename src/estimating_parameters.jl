@@ -12,7 +12,7 @@
                     solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                     opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
 
-This estimate the parameters of the system of differential equations using the objective function `obj_arr` given `prob` using the optimization algorithm `alg_opti`. 
+This estimate the parameters of the system of differential equations using the objective functions in `obj_arr` given `prob` using the optimization algorithm `alg_opti`. 
 
 Estimation of parameters is done using the objective function array `obj_arr` where each objective function in the array corresponds to data described by `sol_obs` and `incidence_obs`. For instance, if `obj_arr = [obj1 obj2]`,`sol_obs = [2]`, `incidence_obs = [3]`, then `obj1` use data corresponding to the second state variable of the DEs and `obj2` use incidence data of the third state variable of the DEs. Noisy data or any other type of data should be passed to `data` and in the same order as in the arrays `sol_obs` and `incidence_obs`. Fixing a parameter can be done using `param_index`. Instead, this return the fitted parameters with `param_eval` for the fixed parameter and accordingly, the loss is the objective function evaluated at the fitted parameters with `param_eval` for the fixed parameter. 
 

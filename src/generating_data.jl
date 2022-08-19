@@ -9,9 +9,9 @@
 This generates perfect and noisy data and incidence data of the state variables of the 
 system of differential equations. 
 
-Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
-``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
-where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+Let ``\\mathcal{I}:[t_0,t_1,\\dots,t_n] \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=t_0`` and ``\\mathcal{C}(t_i) - \\mathcal{C}(t_{i-1})`` if ``t \\neq t_0``
+where ``\\mathcal{C}`` is cumulative data. Note that `times` is ``[t_0,t_1,\\dots,t_n]``.
 
 # Arguments
 - `index::Integer`: Index of the component of the state variables for data collection.
@@ -68,9 +68,9 @@ end
 
 This generates incidence data without noise by solving the DEs and computing incidence data from cumulative data according to the `index`th state variable.
 
-Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
-``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
-where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+Let ``\\mathcal{I}:[t_0,t_1,\\dots,t_n] \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=t_0`` and ``\\mathcal{C}(t_i) - \\mathcal{C}(t_{i-1})`` if ``t \\neq t_0``
+where ``\\mathcal{C}`` is cumulative data. Note that `times` is ``[t_0,t_1,\\dots,t_n]``.
 
 # Arguments
 - `index::Integer`: Index of the component of the state variables for data collection.
@@ -115,15 +115,15 @@ end
 
 This generates incidence data from cumulative data.
 
-Let ``\\mathcal{I}:T \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
-``0`` if ``t=0`` and ``\\mathcal{C}(t) - \\mathcal{C}(t-1)`` if ``t \\neq 0``
-where ``T`` is `times` and ``\\mathcal{C}`` is cumulative data.
+Let ``\\mathcal{I}:[t_0,t_1,\\dots,t_n] \\rightarrow \\mathbb{R}`` be the number of incidences defined by 
+``0`` if ``t=t_0`` and ``\\mathcal{C}(t_i) - \\mathcal{C}(t_{i-1})`` if ``t \\neq t_0``
+where ``\\mathcal{C}`` is cumulative data.
 
 # Arguments
 - `sol::AbstractVector{<:Real}`: Vector of cumulative data.
 
 # Returns
-- `incidence_data`: Incidence data calculated from incidence data.
+- `incidence_data`: Incidence data calculated from cumulative data.
 """
 function generate_incidence_data(sol::AbstractVector{<:Real}) 
     incidence_data = Vector{Float64}()
