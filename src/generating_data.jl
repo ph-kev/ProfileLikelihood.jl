@@ -126,14 +126,14 @@ where ``\\mathcal{C}`` is cumulative data.
 - `incidence_data`: Incidence data calculated from cumulative data.
 """
 function generate_incidence_data(sol::AbstractVector{<:Real}) 
-    incidence_data = Vector{Float64}()
+    incidence_data = Vector{Float64}(undef, length(sol))
     for i in eachindex(sol)
         if i == 1
             # First data point of incidence data is always 0
-            append!(incidence_data, 0) 
+            incidence_data[i] = 0
         else 
             # Incidence data is Δ(C(t) - C(t-1))
-            append!(incidence_data, sol[i] - sol[i-1]) 
+            incidence_data[i] = sol[i] - sol[i-1]
         end
     end
     return incidence_data
