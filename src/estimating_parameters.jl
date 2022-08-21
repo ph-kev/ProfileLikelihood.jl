@@ -23,7 +23,7 @@ Estimation of parameters is done using the objective function array `obj_arr` wh
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{Function}`: Vector of objective functions. 
 - `alg_opti`: Optimization algorithm (see `Optimization.jl` for a list of algorithms that could be used).
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
@@ -46,13 +46,13 @@ function estimate_params(p0::AbstractVector{<:Real},
                          sol_obs::AbstractVector{<:Integer}, 
                          prob::SciMLBase.AbstractDEProblem, 
                          alg_diff::SciMLBase.AbstractDEAlgorithm, 
-                         times::AbstractVector{<:Real}, obj_arr::AbstractVector, 
+                         times::AbstractVector{<:Real}, obj_arr::AbstractVector{Function}, 
                          alg_opti, 
                          lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                         incidence_obs::AbstractVector{<:Int} = [], param_index::Int=0, 
+                         incidence_obs::AbstractVector{<:Int} = Int64[], param_index::Int=0, 
                          param_eval::Real=0.0, 
                          solver_diff_opts::Dict = Dict(), opti_prob_opts::Dict = Dict(), 
-                         opti_solver_opts::Dict = Dict(), print_status::Bool = false) 
+                         opti_solver_opts::Dict = Dict(), print_status::Bool = false)
     if param_index == 0 # check if the parameter is fixed or not 
         g = (params, params_func) -> likelihood(params, data, sol_obs, prob, alg_diff, times,
         obj_arr; incidence_obs = incidence_obs, param_index=param_index, param_eval=param_eval,

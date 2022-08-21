@@ -5,11 +5,11 @@
                prob::SciMLBase.AbstractDEProblem, 
                alg::SciMLBase.AbstractDEAlgorithm, 
                times::AbstractVector{<:Real}, 
-               obj_arr::AbstractVector; 
-               incidence_obs::AbstractVector{<:Integer} = [], 
+               obj_arr::AbstractVector{<:Function}; 
+               incidence_obs::AbstractVector{<:Integer} = Int64[], 
                param_index::Integer=0, 
                param_eval::Real=0.0, 
-               solver_diff_opts::Dict = Dict())
+               solver_diff_opts::Dict = Dict())::Float64
 
 This computes the likelihood based on the given parameters `params`, `data`, and likelihood functions in `obj_arr`. 
 
@@ -40,11 +40,11 @@ function likelihood(params::AbstractVector{<:Real},
                     prob::SciMLBase.AbstractDEProblem, 
                     alg::SciMLBase.AbstractDEAlgorithm, 
                     times::AbstractVector{<:Real}, 
-                    obj_arr::AbstractVector; 
-                    incidence_obs::AbstractVector{<:Integer} = [], 
+                    obj_arr::AbstractVector{<:Function}; 
+                    incidence_obs::AbstractVector{<:Integer} = Int64[], 
                     param_index::Integer=0, 
                     param_eval::Real=0.0, 
-                    solver_diff_opts::Dict = Dict())
+                    solver_diff_opts::Dict = Dict())::Float64
     sol_obs_copy = vcat(sol_obs, incidence_obs)
     if param_index != 0 # check if the parameter is fixed or not
         params_copy = copy(params)
@@ -69,8 +69,7 @@ function likelihood(params::AbstractVector{<:Real},
     end
     for ind in eachindex(incidence_obs)
         incidence_sol = generate_incidence_data(sol[ind + index,:])
-        #= remove the first data point for cumulative data since it is always 0 and 
-        taking the log of 0 is -Inf =# 
+        # remove the first data point for cumulative data since it is always 0  
         loss += obj_arr[ind + index](data[ind + index][2:end], incidence_sol[2:end]) 
     end
     return loss

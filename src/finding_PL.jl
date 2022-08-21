@@ -17,10 +17,10 @@ end
                 prob::SciMLBase.AbstractDEProblem, 
                 alg_diff::SciMLBase.AbstractDEAlgorithm, 
                 times::AbstractVector{<:Real}, 
-                obj_arr::AbstractVector, 
+                obj_arr::AbstractVector{<:Function}, 
                 alg_opti, 
                 lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                incidence_obs::AbstractVector{<:Integer}=[], 
+                incidence_obs::AbstractVector{<:Integer}=Int64[], 
                 solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                 opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
 
@@ -38,13 +38,13 @@ This compute the points to the right of the minimum point of the profile likelih
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Optimization algorithm (see `Optimization.jl` for a list of algorithms that could be used).
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -62,14 +62,14 @@ function go_right_PL(step_size::Real, max_steps::Integer, param_index::Integer,
                      prob::SciMLBase.AbstractDEProblem, 
                      alg_diff::SciMLBase.AbstractDEAlgorithm, 
                      times::AbstractVector{<:Real}, 
-                     obj_arr::AbstractVector, 
+                     obj_arr::AbstractVector{<:Function}, 
                      alg_opti, 
                      lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                     incidence_obs::AbstractVector{<:Integer}=[], 
+                     incidence_obs::AbstractVector{<:Integer}=Int64[], 
                      solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                      opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
-    theta_right = Vector{Real}()
-    sol_right = Vector{Real}()
+    theta_right = Vector{Float64}()
+    sol_right = Vector{Float64}()
     curr_loss = loss
     param_fitted_copy = copy(param_fitted)
     param_to_look_at = param_fitted_copy[param_index]
@@ -104,10 +104,10 @@ end
                prob::SciMLBase.AbstractDEProblem, 
                alg_diff::SciMLBase.AbstractDEAlgorithm, 
                times::AbstractVector{<:Real}, 
-               obj_arr::AbstractVector, 
+               obj_arr::AbstractVector{<:Function}, 
                alg_opti, 
                lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-               incidence_obs::AbstractVector{<:Integer}=[],  
+               incidence_obs::AbstractVector{<:Integer}=Int64[],  
                solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                opti_solver_opts::Dict=Dict(), print_status::Bool=false)
 
@@ -125,13 +125,13 @@ This compute the points to the left of the minimum point of the profile likeliho
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Optimization algorithm (see `Optimization.jl` for a list of algorithms that could be used).
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
            
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -149,14 +149,14 @@ function go_left_PL(step_size::Real, max_steps::Integer, param_index::Integer,
                     prob::SciMLBase.AbstractDEProblem, 
                     alg_diff::SciMLBase.AbstractDEAlgorithm, 
                     times::AbstractVector{<:Real}, 
-                    obj_arr::AbstractVector, 
+                    obj_arr::AbstractVector{<:Function}, 
                     alg_opti, 
                     lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                    incidence_obs::AbstractVector{<:Integer}=[],  
+                    incidence_obs::AbstractVector{<:Integer}=Int64[],  
                     solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                     opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
-    thetaLeft = Vector{Real}()
-    solLeft = Vector{Real}()
+    thetaLeft = Vector{Float64}()
+    solLeft = Vector{Float64}()
     curr_loss = loss
     param_fitted_copy = copy(param_fitted)
     param_to_look_at = param_fitted_copy[param_index]
@@ -194,7 +194,7 @@ end
                             obj_arr::AbstractVector, 
                             alg_opti, 
                             lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                            incidence_obs=[], 
+                            incidence_obs::AbstractVector{<:Integer}=Int64[], 
                             solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                             opti_solver_opts::Dict=Dict(), 
                             print_status::Bool=false, pl_const::Real=0.0)
@@ -218,13 +218,13 @@ points being computed is above the `threshold`.
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Optimization algorithm (see `Optimization.jl` for a list of algorithms that could be used).
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -246,7 +246,7 @@ function find_profile_likelihood(step_size::Real, max_steps::Integer, param_inde
                                  obj_arr::AbstractVector, 
                                  alg_opti, 
                                  lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                                 incidence_obs=[], 
+                                 incidence_obs::AbstractVector{<:Integer}=Int64[], 
                                  solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                                  opti_solver_opts::Dict=Dict(), 
                                  print_status::Bool=false, pl_const::Real=0.0) 
@@ -279,10 +279,10 @@ end
                            prob::SciMLBase.AbstractDEProblem, 
                            alg_diff::SciMLBase.AbstractDEAlgorithm, 
                            times::AbstractVector{<:Real}, 
-                           obj_arr::AbstractVector, 
+                           obj_arr::AbstractVector::{<:Function}, 
                            alg_opti, alg_opti_local
                            lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                           incidence_obs::AbstractVector{<:Integer}=[], 
+                           incidence_obs::AbstractVector{<:Integer}=Int64[], 
                            solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                            opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
 
@@ -302,14 +302,14 @@ This is used by `find_profile_likelihood_multistart`.
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Global optimization algorithm. Typically, `MultistartOptimization.TikTak(n)` where `n` is the number of starting points generated from the Sobol sequence.
 - `alg_opti_local`: Local optimization algorithm. Must be an algorithm from `NLopt.jl`.
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -327,14 +327,14 @@ function go_right_PL_multistart(step_size::Real, max_steps::Integer, param_index
                                 prob::SciMLBase.AbstractDEProblem, 
                                 alg_diff::SciMLBase.AbstractDEAlgorithm, 
                                 times::AbstractVector{<:Real}, 
-                                obj_arr::AbstractVector, 
+                                obj_arr::AbstractVector{<:Function}, 
                                 alg_opti, alg_opti_local, 
                                 lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                                incidence_obs::AbstractVector{<:Integer}=[], 
+                                incidence_obs::AbstractVector{<:Integer}=Int64[], 
                                 solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                                 opti_solver_opts::Dict=Dict(), print_status::Bool=false)
-    theta_right = Vector{Real}()
-    sol_right = Vector{Real}()
+    theta_right = Vector{Float64}()
+    sol_right = Vector{Float64}()
     curr_loss = loss
     param_fitted_copy = copy(param_fitted)
     param_to_look_at = param_fitted_copy[param_index]
@@ -367,10 +367,10 @@ end
                           prob::SciMLBase.AbstractDEProblem, 
                           alg_diff::SciMLBase.AbstractDEAlgorithm, 
                           times::AbstractVector{<:Real}, 
-                          obj_arr::AbstractVector, 
+                          obj_arr::AbstractVector{<:Function}, 
                           alg_opti, alg_opti_local
                           lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                          incidence_obs::AbstractVector{<:Integer}=[], 
+                          incidence_obs::AbstractVector{<:Integer}=Int64[], 
                           solver_diff_opts::Dict=Dict(), opti_prob_opts::Dict=Dict(), 
                           opti_solver_opts::Dict=Dict(), print_status::Bool=false) 
 
@@ -390,14 +390,14 @@ This is used by `find_profile_likelihood_multistart`.
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Global optimization algorithm. Typically, `MultistartOptimization.TikTak(n)` where `n` is the number of starting points generated from the Sobol sequence.
 - `alg_opti_local`: Local optimization algorithm. Must be an algorithm from `NLopt.jl`.
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -415,14 +415,14 @@ function go_left_PL_multistart(step_size::Real, max_steps::Integer, param_index:
                                prob::SciMLBase.AbstractDEProblem, 
                                alg_diff::SciMLBase.AbstractDEAlgorithm, 
                                times::AbstractVector{<:Real}, 
-                               obj_arr::AbstractVector, 
+                               obj_arr::AbstractVector{<:Function}, 
                                alg_opti, alg_opti_local, 
                                lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                               incidence_obs::AbstractVector{<:Integer}=[], 
+                               incidence_obs::AbstractVector{<:Integer}=Int64[], 
                                solver_diff_opts=Dict(), opti_prob_opts=Dict(), 
                                opti_solver_opts=Dict(), print_status=false) 
-    thetaLeft = Vector{Real}()
-    solLeft = Vector{Real}()
+    thetaLeft = Vector{Float64}()
+    solLeft = Vector{Float64}()
     curr_loss = loss
     param_fitted_copy = copy(param_fitted)
     param_to_look_at = param_fitted_copy[param_index]
@@ -455,10 +455,10 @@ end
                                        prob::SciMLBase.AbstractDEProblem, 
                                        alg_diff::SciMLBase.AbstractDEAlgorithm,  
                                        times::AbstractVector{<:Real}, 
-                                       obj_arr::AbstractVector, 
+                                       obj_arr::AbstractVector{<:Function}, 
                                        alg_opti, alg_opti_local, 
                                        lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                                       incidence_obs::AbstractVector{<:Integer}=[], 
+                                       incidence_obs::AbstractVector{<:Integer}=Int64[], 
                                        solver_diff_opts=Dict(), opti_prob_opts=Dict(), 
                                        opti_solver_opts=Dict(), 
                                        print_status::Bool=false, pl_const::Real=0.0)
@@ -483,14 +483,14 @@ and `find_profile_likelihood_multistart` is that this function uses the multi-st
 - `prob::SciMLBase.AbstractDEProblem`: DE Problem (see `DifferentialEquations.jl` for more information).
 - `alg_diff::SciMLBase.AbstractDEAlgorithm`: DE Solver Algorithm (see `DifferentialEquations.jl` for more information).
 - `times::AbstractVector{<:Real}`: Times that the data points will be sampled at.
-- `obj_arr::AbstractVector`: Vector of objective functions. 
+- `obj_arr::AbstractVector{<:Function}`: Vector of objective functions. 
 - `alg_opti`: Global optimization algorithm. Typically, `MultistartOptimization.TikTak(n)` where `n` is the number of starting points generated from the Sobol sequence.
 - `alg_opti_local`: Local optimization algorithm. Must be an algorithm from `NLopt.jl`.
 - `lb::AbstractVector{<:Real}`: Lower bound (does not need to be changed if `param_index` and `param_eval` are used).
 - `ub::AbstractVector{<:Real}`: Upper bound (does not need to be changed if `param_index` and `param_eval` are used).
 
 # Keywords 
-- `incidence_obs=[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
+- `incidence_obs::AbstractVector{<:Integer}=Int64[]`: Indices of the state variables of the DEs to find incidence data of. The state variables must be cumulative data.  
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
@@ -509,10 +509,10 @@ function find_profile_likelihood_multistart(step_size::Real, max_steps::Integer,
                                             prob::SciMLBase.AbstractDEProblem, 
                                             alg_diff::SciMLBase.AbstractDEAlgorithm,  
                                             times::AbstractVector{<:Real}, 
-                                            obj_arr::AbstractVector, 
+                                            obj_arr::AbstractVector{<:Function}, 
                                             alg_opti, alg_opti_local, 
                                             lb::AbstractVector{<:Real}, ub::AbstractVector{<:Real}; 
-                                            incidence_obs::AbstractVector{<:Integer}=[], 
+                                            incidence_obs::AbstractVector{<:Integer}=Int64[], 
                                             solver_diff_opts=Dict(), opti_prob_opts=Dict(), 
                                             opti_solver_opts=Dict(), 
                                             print_status::Bool=false, pl_const::Real=0.0) 

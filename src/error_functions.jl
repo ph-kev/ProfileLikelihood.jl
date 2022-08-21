@@ -29,7 +29,7 @@ where ``g(t_i,θ)`` is the ``i``th point of the predicted solution
 and ``y_i`` is the ``i``th data point.
 """
 function poisson_error(data::AbstractVector{<:Real}, sol::AbstractVector{<:Real}) 
-    return 2*(sum(abs.(sol)) - sum(abs.(data) .* log.(abs.(sol))))
+    return float(2*(sum(abs.(sol)) - sum(abs.(data) .* log.(abs.(sol)))))
 end
 
 """
