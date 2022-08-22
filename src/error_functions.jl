@@ -29,7 +29,7 @@ where ``g(t_i,θ)`` is the ``i``th point of the predicted solution
 and ``y_i`` is the ``i``th data point.
 """
 function poisson_error(data::AbstractVector{<:Real}, sol::AbstractVector{<:Real}) 
-    return float(2*(sum(abs.(sol)) - sum(abs.(data) .* log.(abs.(sol)))))
+    return convert(Float64, 2*(sum(abs.(sol)) - sum(abs.(data) .* log.(abs.(sol)))))
 end
 
 """
@@ -98,7 +98,7 @@ function likelihood_const(obj::String;
         if length(data) == 0
             println("The keyword argument data is missing.")
         end
-        return 2*sum(log.(factorial.(big.(data))))
+        return convert(Float64, 2*sum(log.(factorial.(big.(data)))))
     elseif obj == "const_variance_error"
         if length(times) == 0
             println("The keyword argument times is missing.")
