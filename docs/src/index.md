@@ -13,7 +13,7 @@ To install, use the following commands inside Julia REPL:
 ```julia 
 julia> ]
 
-(@v1.7) pkg> add github.com/ph-kev/ProfileLikelihood.jl
+(@v1.7) pkg> add https://github.com/ph-kev/ProfileLikelihood.jl
 ```
 
 To use the package, add the command: 
