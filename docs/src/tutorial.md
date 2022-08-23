@@ -1,6 +1,6 @@
 # Tutorial
 
-This tutorial highlights how `ProfileLikelihood.jl` can be used to generate data, estimate parameters, and find the profile likelihood. Furthermore, profile likelihood can be used for identifiability analysis and confidence intervals estimation. It is recommend to read the documentation for more information.
+This tutorial highlights how `ProfileLikelihood.jl` can be used to generate data, estimate parameters, and find the profile likelihood. Furthermore, profile likelihood can be used for identifiability analysis and confidence intervals estimation. This is not meant to be a comprehensive tutorial using `ProfileLikelihood.jl", but is the bare minimum to get started with profile likelihood. It is recommended to read the documentation alongside the tutorial.
 
 ## Packages
 
@@ -28,9 +28,9 @@ end
 nothing # hide
 ```
 
-Note that none of the parameters are known. If we want to make a parameter known, we can simply put it as a `const` global variable. For instance, if we want to make beta known as 0.01, we would add the line `const beta = 0.0001` before defining the function `sir!`. Also, the variable `C` is the cumulative data of the infected.
+Note that none of the parameters are known. If we want to make a parameter known, we can simply put it as a `const` global variable. For instance, if we want to make beta fixed at 0.01, we would add the line `const beta = 0.0001` before defining the function `sir!`. We would also need to remove beta from `sir!`. Also, the variable `C` is the cumulative data of the infected.
 
-We now set up the time span, initial conditions, and true parameters for the differential equation solver.
+We now set up the time span, initial conditions, and parameters for the differential equation solver.
 
 ```@example tutorial
 tspan = (0.0, 40.0)

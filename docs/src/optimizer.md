@@ -26,4 +26,4 @@ Note that this is based on personal experience on using these optimization metho
 - `MultistartOptimization.TikTak(n)` with `NLopt.LN_NELDERMEAD` from `MultistartOptimization.jl` and `NLopt.jl`
 from most recommended to least recommended. `NOMADOpt()` is reasonably accurate and fast at 
 finding the global minimum compared to the rest of the methods. However, `BBO_generating_set_search()` is the most accurate at finding the global minimum, but 
-is typically the slowest. `OptimizationMetaheuristics.DE()` and `MultistartOptimization.TikTak(n)` with `NLopt.LN_NELDERMEAD` are other global optimization methods that could be used to check whether the global minimum is found. 
+is typically the slowest. Other optimization methods that are worth using are `OptimizationMetaheuristics.DE()` and `MultistartOptimization.TikTak(n)` with `NLopt.LN_NELDERMEAD` which could be used to check if the optimization method was successful at finding the global minimum.
