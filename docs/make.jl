@@ -1,4 +1,4 @@
-using Documenter, ProfileLikelihood
+using Documenter, ProfileLikelihood, DifferentialEquations, Distributions, Plots, LaTeXStrings, Measures, Interpolations
 
 makedocs(sitename = "ProfileLikelihood.jl",
          pages = ["index.md",
