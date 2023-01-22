@@ -4,11 +4,11 @@
 This finds the threshold used for calculating likelihood-based confidence intervals. 
 
 The threshold Δ_α is the α quantile of the χ^2 distribution with df=1 for pointwise 
-confidence intervals and df=# of parameters for simulataneous confidence intervals.
+confidence intervals and df=# of parameters for simultaneous confidence intervals.
 
 # Arguments 
 - `confidence::Real`: Level of confidence used for confidence interval. 
-- `nums_params::Integer`: Number of parameters. ``df`` = 1 for pointwise confidence intervals and ``df`` = number of unknown parameters for simulataneous confidence intervals.
+- `nums_params::Integer`: Number of parameters. ``df`` = 1 for pointwise confidence intervals and ``df`` = number of unknown parameters for simultaneous confidence intervals.
 - `loss:Real`: Minimum loss according to negative log-likelihood function after optimization.
 
 # Return
