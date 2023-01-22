@@ -85,7 +85,7 @@ prob = remake(prob; tspan = tspan)
 nothing # hide
 ```
 
-Let fit the ``SIR`` model to the noisy data that we have generated. The package `ProfileLikelihood.jl` already have objective functions derived from maxmimum likelihood estimation. The third input of `const_variance_error` is the standard deviation of the noise distribution which is ``σ = 30``.
+Let fit the ``SIR`` model to the noisy data that we have generated. The package `ProfileLikelihood.jl` already have objective functions derived from maximum likelihood estimation. The third input of `const_variance_error` is the standard deviation of the noise distribution which is ``σ = 30``.
 
 ```@example tutorial
 obj_const_variance = (data, sol) -> const_variance_error(data, sol, 30.0)
@@ -103,7 +103,7 @@ solver_diff_opts = Dict(
 nothing # hide
 ```
 
-The first input to `estimate_params` is the initial guess of parameters, the second input is any non-incidence data, and the third input is the indices of the state variables of the DEs that we are interested in. The eighth, ninth, and tenth inputs are the optimizaiton algorithm, lower bounds, and upper bounds. For more information, see the `ProfileLikelihood.jl` documentation and `Optimization.jl` documentation. For this tutorial, we will use the `NOMADOpt()` optimization algorithm from the package `NOMAD.jl` package.
+The first input to `estimate_params` is the initial guess of parameters, the second input is any non-incidence data, and the third input is the indices of the state variables of the DEs that we are interested in. The eighth, ninth, and tenth inputs are the optimization algorithm, lower bounds, and upper bounds. For more information, see the `ProfileLikelihood.jl` documentation and `Optimization.jl` documentation. For this tutorial, we will use the `NOMADOpt()` optimization algorithm from the package `NOMAD.jl` package.
 
 ```@example tutorial
 initial_guess = [1.0, 1.0]
@@ -190,7 +190,7 @@ scatter!([fitted_params[2]], [loss + pl_const], color = "orange", labels = "Fitt
 ```
 
 ## Identifiability analysis and confidence interval estimation
-If the confidence intervals are finite and the global minimum is unique, then the parameter is practically identifiable. If the conifdence interval is not finite, then the parameter is not practically identifiable. From the profile likelihood plots, the parameters ``β`` and ``γ`` are practically identifiable.
+If the confidence intervals are finite and the global minimum is unique, then the parameter is practically identifiable. If the confidence interval is not finite, then the parameter is not practically identifiable. From the profile likelihood plots, the parameters ``β`` and ``γ`` are practically identifiable.
 
 The confidence intervals are determined by the intercepts of the threshold and the profile likelihood plot. For this tutorial, we will find simultaneous confidence intervals. We use the `Interpolations.jl` package to make a linear interpolant of the points found.
 

@@ -35,7 +35,7 @@ Estimation of parameters is done using the objective function array `obj_arr` wh
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 
 # Returns
 - `minimum`: Loss of the fitted parameters according to the objective function(s).
@@ -98,7 +98,7 @@ end
 This estimate the parameters of the system of differential equations using the objective function `obj_arr` given `prob` using the multi-start optimization algorithm `alg_opti` from `MultiStartOptimization` and the local optimization algorithm `alg_opti_local` from the `NLopt.jl`. 
 
 The algorithm `alg_opti` is always `MultistartOptimization.TikTak(n)` where `n` is
-the number of starting points generated from the Sobol sequence. `MultistartOptimization.jl` only support optimziation algorithms from `NLopt.jl`. The recommended local optimization algorithm is `NLopt.LN_NELDERMEAD()`. See the docstring for `estimate_params` for more information for what `estimate_params_multistart` do. 
+the number of starting points generated from the Sobol sequence. `MultistartOptimization.jl` only support optimization algorithms from `NLopt.jl`. The recommended local optimization algorithm is `NLopt.LN_NELDERMEAD()`. See the docstring for `estimate_params` for more information for what `estimate_params_multistart` do. 
 
 # Arguments
 - `p0::AbstractVector{<:Real}`: Starting guess for optimization. If `param_index` and `param_eval` are used, then `p0` should not contain the fixed parameter.
@@ -120,7 +120,7 @@ the number of starting points generated from the Sobol sequence. `MultistartOpti
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 
 # Returns
 - `minimum`: Loss of the fitted parameters according to the objective function(s).

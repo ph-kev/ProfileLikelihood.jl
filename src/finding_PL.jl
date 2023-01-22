@@ -48,7 +48,7 @@ This compute the points to the right of the minimum point of the profile likelih
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 
 # Returns
 - `theta_right`: Values of the fixed parameter that is explored to the right of the minimum point.
@@ -135,7 +135,7 @@ This compute the points to the left of the minimum point of the profile likeliho
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
            
 # Returns
 - `theta_left`: Values of the fixed parameter that is explored to the left of the minimum point.
@@ -228,7 +228,7 @@ points being computed is above the `threshold`.
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 - `pl_const::Real=0.0`: Constant that is added to loss of the computed points. The constant can be computed by `likelihood_const`.
 
 # Returns
@@ -313,7 +313,7 @@ This is used by `find_profile_likelihood_multistart`.
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 
 # Returns
 - `theta_right`: Values of the fixed parameter that is explored to the right of the minimum point.
@@ -401,7 +401,7 @@ This is used by `find_profile_likelihood_multistart`.
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 
 # Returns
 - `theta_right`: Values of the fixed parameter that is explored to the left of the minimum point.
@@ -494,7 +494,7 @@ and `find_profile_likelihood_multistart` is that this function uses the multi-st
 - `solver_diff_opts::Dict=Dict()`: Keyword arguments to be passed into the DE solver. See `DifferentialEquations.jl`'s Common Solver Options.
 - `opti_prob_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization problem. See `Optimization.jl`'s Defining OptimizationProblems.
 - `opti_solver_opts::Dict=Dict()`: Keyword arguments to be passed into the optimization solver. See `Optimization.jl`'s Common Solver Options.
-- `print_status::Bool=false`: Determine whether the orginal output of the optimization algorithm is printed or not. 
+- `print_status::Bool=false`: Determine whether the original output of the optimization algorithm is printed or not. 
 - `pl_const::Real=0.0`: Constant that is added to loss of the computed points. The constant can be computed by `likelihood_const`.
 
 # Returns
