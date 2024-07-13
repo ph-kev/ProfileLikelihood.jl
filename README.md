@@ -1,5 +1,8 @@
 # ProfileLikelihood
 
+## Notice
+This package is not maintained anymore and users interested in profile likelihood analysis is encouraged to use LikelihoodProfiler.jl.
+
 ## Introduction
 The package `ProfileLikelihood.jl` provide methods for generating perfect and noisy data, estimating parameters, generating profile likelihood, and finding confidence intervals of the estimated parameters. This package is written in mind for use in epidemiology, but it should work well for other fields such as systems biology. More information can be found at Raul et. al.'s "... exploiting the profile likelihood" which introduces the method of profile likelihood in the field of systems biology [1].
 
